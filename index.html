@@ -1,0 +1,144 @@
+<!-- The purpose is basically to tell the browser that we are using the latest accepted HTML conventions. Should be the first line in every HTML document -->
+<!doctype html>
+<!-- everything between <html> tag will be HTML markup language -->
+<html>
+<!-- <head> will contain meta-data/properties about the document -->
+<head>
+  <!-- shown as text on browser tab & when user bookmarks page -->
+  <title>Pacman Game</title>
+  <!-- css stylesheet is used for the look & formatting -->
+  <!-- usually link to external stylesheet but can do here or inline -->
+  <style type="text/css">
+    #container{
+      background-color: black;
+      width: 400px;
+      height: 400px;
+      position: relative;
+    }
+/* 0 */
+    .brick{ 
+      background-color: blue;
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      /*display: inline-block;*/
+    }
+/* 1 */
+    .coin{
+      background-image: url('coin.png');
+      background-size: cover;
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      /*display: inline-block;*/
+    }
+
+    .pacman{
+      background-image: url('pacman.gif');
+      background-size: cover;
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      /*display: inline-block;*/
+    }
+/* 2 */
+    .blank{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      /*display: inline-block;*/
+    }
+
+  </style>
+</head>
+
+<!-- <body> has everything that will be rendered/visible when page loads in browser -->
+<body>
+  <!-- for additional sectioning needs we can use a division <div> tag -->
+  <!-- id vs. class (each id must be unique vs. many with the same class name) -->
+  <div id='container'>
+    <div id='world'></div>
+  </div>
+
+  <script type="text/javascript">
+    // create an object to store the propeties of the character
+    var pacman = {
+      x: 5,
+      y: 5
+    }
+    // create an array to hold the 'world' or gameboard that we will use to represent what each box in the grid will be
+    var world = [
+      0,0,0,0,0,0,0,0,0,0,
+      0,1,1,1,1,1,1,1,1,0,
+      0,1,1,1,1,1,1,1,1,0,
+      0,1,1,1,1,1,1,1,1,0,
+      0,1,1,1,2,1,1,1,1,0,
+      0,1,0,1,1,1,2,2,2,0,
+      0,1,0,1,1,1,1,1,1,0,
+      0,1,0,0,1,0,0,1,1,0,
+      0,1,1,1,1,1,1,1,1,0,
+      0,0,0,0,0,0,0,0,0,0,
+    ];
+    // create the html to render/display in the browser for the user to see
+    function draw_world(){
+      // using innerHTML to set (can also get!) the contents of the element with the ID of 'world'
+      document.getElementById('world').innerHTML = "";
+      // loop through the 'world' array to generate the html
+      for(var i = 0; i < world.length; i++){
+
+        if(world[i] === 0) {
+          // draw a brick
+          document.getElementById('world').innerHTML = 
+            document.getElementById('world').innerHTML +
+            "<div class='brick' style='top:" + Math.floor(i/10) * 32 + "px;left:" + (i%10) * 32 + "px'></div>";
+        } else if(world[i] === 1){
+          // draw a coin
+          document.getElementById('world').innerHTML = 
+            document.getElementById('world').innerHTML +
+            "<div class='coin' style='top:" + Math.floor(i/10) * 32 + "px;left:" + (i%10) * 32 + "px'></div>";
+        }
+      }
+    }
+
+    // create the html to render pacman in the html
+    function draw_pacman(){
+      document.getElementById('world').innerHTML = document.getElementById('world').innerHTML + "<div class='pacman' style='top: " + pacman.y * 32 + "px; left: " + pacman.x * 32 + "px'></div>";
+    }
+
+    // call functions
+    draw_world();
+    draw_pacman();
+
+    document.onkeydown = function(e){
+      console.log(e.keyCode);
+      // determine if an arrow key was pressed
+      if(e.keyCode == 37){
+        // go left
+        pacman.x = pacman.x - 1; // if this spot == 0 its a 'brick' don't allow movement to occur
+      } else if(e.keyCode == 39){
+        // go right
+        pacman.x = pacman.x + 1;
+      }
+      if(world[((pacman.y * 10) + pacman.x)] == 1){
+        // there is a coin here, remove it from the array
+        world[((pacman.y * 10) + pacman.x)] = 2;
+      }
+      // call functions to update the view
+      draw_world();
+      draw_pacman();
+    }
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
