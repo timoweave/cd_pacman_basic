@@ -2,6 +2,9 @@
 
 make the classic pacman from provided code.
 
+1. git clone https://github.com/timoweave/cd_pacman_basic.git
+1. cd cd_pacman_basic && open index.html
+
 # make all the required task
 
 1. move pacman up and down.
